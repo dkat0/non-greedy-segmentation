@@ -2,8 +2,16 @@ import json
 import os
 from abc import ABC, abstractmethod
 from typing import List
-from warnings import 
-from .. import tokenizer as new_tokenizer
+from warnings import warn
+
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_parent_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.append(parent_parent_dir)
+
+from tokenizer import TextSegmenter
+
+sys.path.remove(parent_parent_dir)
 
 import openai
 
@@ -218,9 +226,9 @@ class HfTorchDecoder(DecoderBase):
             assert num_samples == 1
         
         if new_tokenization:
-            segmenter = new_tokenizer.TextSegmenter(k=5, model=self.model, tokenizer=self.tokenizer)
+            segmenter = TextSegmenter(k=5, alpha=0.5, model=self.model, tokenizer=self.tokenizer)
             best_seg = segmenter.tokenize(text)
-            print(best_seg)
+            #print(best_seg)
             input_tokens = self.tokenizer(best_seg, is_split_into_words=True, return_tensors="pt").to(
                 self.device
             )
