@@ -3,14 +3,18 @@ import torch
 import time
 import os
 
+# EvalPlus test:
+# python codegen/generate.py --model "meta-llama/Meta-Llama-3-8B" --greedy --root res --dataset humaneval --backend hf --new_tokenization True
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 class TextSegmenter:
-    def __init__(self, model_name="meta-llama/Meta-Llama-3-8B", k=5, model=None, tokenizer=None):
+    def __init__(self, model_name="meta-llama/Meta-Llama-3-8B", k=5, alpha=0.5, model=None, tokenizer=None):
         self.tokenizer = tokenizer if tokenizer else AutoTokenizer.from_pretrained(model_name)
         self.model = model if model else AutoModelForCausalLM.from_pretrained(model_name)
         self.vocab = self.tokenizer.get_vocab()
         self.k = k
+        self.perplexity_normalization_alpha = alpha
 
     def compute_segs(self, text):
         text = text.replace(' ', 'Ġ').replace("\n", 'Ċ').replace("\t", 'ĉ')
@@ -24,12 +28,12 @@ class TextSegmenter:
                 if token in self.vocab:
                     if j == 0:
                         # Directly add seg if it's the full entry
-                        segs[i].append(([token], self.test_perplexity([token])))
+                        segs[i].append(([token], self.calculate_seg_perplexity([token])))
                     else:
                         for k_prime in range(min(self.k, len(segs[j-1]))):
                             # Update segs[i] with new seg and calculate perplexity
                             new_seg = segs[j-1][k_prime][0] + [token]
-                            segs[i].append((new_seg, self.test_perplexity(new_seg)))
+                            segs[i].append((new_seg, self.calculate_seg_perplexity(new_seg)))
                     
             # Keep only top k segs
             segs[i] = sorted(segs[i], key=lambda x: x[1])[:self.k] # Make key=calculate_seg_perplexity for actual
@@ -72,7 +76,7 @@ class TextSegmenter:
 
         # Calculate Normalized PPL
         num_tokens = input_ids.shape[1]
-        average_loss = loss / (num_tokens ** 0.5)
+        average_loss = loss / (num_tokens ** self.perplexity_normalization_alpha)
         normalized_ppl = torch.exp(average_loss)
         
         t2 = time.time()
