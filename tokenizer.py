@@ -11,7 +11,8 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 class TextSegmenter:
     def __init__(self, model_name="meta-llama/Meta-Llama-3-8B", k=5, alpha=0.5, model=None, tokenizer=None):
         self.tokenizer = tokenizer if tokenizer else AutoTokenizer.from_pretrained(model_name)
-        self.model = model if model else AutoModelForCausalLM.from_pretrained(model_name)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = model if model else AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
         self.vocab = self.tokenizer.get_vocab()
         self.k = k
         self.perplexity_normalization_alpha = alpha
@@ -51,12 +52,12 @@ class TextSegmenter:
         #input_ids = [vocab[token] for token in seg]
         #input_ids = tokenizer.convert_tokens_to_ids(seg)
         #input_ids = torch.tensor([input_ids])
-        inputs = self.tokenizer(seg, is_split_into_words=True, return_tensors="pt")
+        inputs = self.tokenizer(seg, is_split_into_words=True, return_tensors="pt").to(self.device)
         input_ids = inputs["input_ids"]
         return self.calculate_perplexity(input_ids)
 
     def get_default_tokenization_perplexity(self, input_text):
-        inputs = self.tokenizer(input_text, return_tensors="pt")
+        inputs = self.tokenizer(input_text, return_tensors="pt").to(self.device)
         input_ids = inputs["input_ids"]
         return self.tokenizer.convert_ids_to_tokens(input_ids.tolist()[0]), self.calculate_perplexity(input_ids)
 
@@ -84,8 +85,8 @@ class TextSegmenter:
         
         return normalized_ppl.item() 
 
-    def tokenize(self, prompt):
-        segs = self.compute_segs(prompt, vocab, k)
+    def tokenize(self, text):
+        segs = self.compute_segs(text)
         best_seg = segs[-1][0]
         
         print(f"Best Seg: {best_seg[0]}")

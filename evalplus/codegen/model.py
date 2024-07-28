@@ -227,7 +227,7 @@ class HfTorchDecoder(DecoderBase):
         
         if new_tokenization:
             segmenter = TextSegmenter(k=5, alpha=0.5, model=self.model, tokenizer=self.tokenizer)
-            best_seg = segmenter.tokenize(text)
+            best_seg = segmenter.tokenize(prompt)
             #print(best_seg)
             input_tokens = self.tokenizer(best_seg, is_split_into_words=True, return_tensors="pt").to(
                 self.device
@@ -285,12 +285,12 @@ class GenenralHfTorchDecoder(HfTorchDecoder):
         self.tokenizer = AutoTokenizer.from_pretrained(self.name)
 
     def codegen(
-        self, prompt: str, do_sample: bool = True, num_samples: int = 200
+        self, prompt: str, do_sample: bool = True, num_samples: int = 200, new_tokenization: bool = False
     ) -> List[str]:
         prompt = make_chat_prompt(
             prompt, self.instruction_prefix, self.response_prefix, self.tokenizer
         )
-        return HfTorchDecoder.codegen(self, prompt, do_sample, num_samples)
+        return HfTorchDecoder.codegen(self, prompt, do_sample, num_samples, new_tokenization)
 
 
 class OpenAIChatDecoder(DecoderBase):
