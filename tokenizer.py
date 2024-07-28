@@ -102,8 +102,10 @@ if __name__ == "__main__":
     text = "catdog catfly"
     k = 10
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     # You can manually pass in a model/tokenizer if you have already created them
-    precreated_model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B").to("cuda")
+    precreated_model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B").to(device)
     precreated_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
 
     print("starting")

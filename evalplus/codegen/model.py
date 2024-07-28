@@ -199,7 +199,7 @@ class HfTorchDecoder(DecoderBase):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         kwargs = {}
-        kwargs["device_map"] = "auto"
+        #kwargs["device_map"] = "auto" # Commented out to make tokenizer work
         kwargs["trust_remote_code"] = self.trust_remote_code
         # string to torch dtype
         kwargs["torch_dtype"] = getattr(torch, self.dtype)
