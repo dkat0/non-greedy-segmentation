@@ -2,9 +2,19 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import time
 import os
+import argparse
+
+# Reg CLI test:
+#
+# Compare Default vs. Perplexity-Optimized Segmentation:
+#   python tokenizer.py --text "How many rs are there in strawberry" --k 10 --alpha 0.5 --model_name "meta-llama/Meta-Llama-3-8B"
+#
+# Obtain Perplexity of User-Defined Segmentation:
+#   python tokenizer.py --user_segmentation "How, many, rs, are, there, in, straw,berry" --alpha 0.5 --model_name "meta-llama/Meta-Llama-3-8B" 
+#   -> This tests the perplexity of the segmentation ["How", " many", " rs", " are", " there", " in", " straw", "berry"]
 
 # EvalPlus test:
-# python codegen/generate.py --model "meta-llama/Meta-Llama-3-8B" --greedy --root res --dataset humaneval --backend hf --new_tokenization True
+#   python codegen/generate.py --model "meta-llama/Meta-Llama-3-8B" --greedy --root res --dataset humaneval --backend hf --new_tokenization True
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -17,8 +27,11 @@ class TextSegmenter:
         self.k = k
         self.perplexity_normalization_alpha = alpha
 
+    def pre_process_text(self, text):
+        return text.replace(' ', 'Ġ').replace("\n", 'Ċ').replace("\t", 'ĉ')
+
     def compute_segs(self, text):
-        text = text.replace(' ', 'Ġ').replace("\n", 'Ċ').replace("\t", 'ĉ')
+        text = self.pre_process_text(text)
         n = len(text)
         segs = [[] for _ in range(n)]
         print(f"Iteration / {n}: ", end = '')
@@ -37,7 +50,7 @@ class TextSegmenter:
                             segs[i].append((new_seg, self.calculate_seg_perplexity(new_seg)))
                     
             # Keep only top k segs
-            segs[i] = sorted(segs[i], key=lambda x: x[1])[:self.k] # Make key=calculate_seg_perplexity for actual
+            segs[i] = sorted(segs[i], key=lambda x: x[1])[:self.k]
             print(f"{i} ", end = '')
             if not segs[i]:
                 print("Possible error has occurred, no segs generated")
@@ -95,28 +108,34 @@ class TextSegmenter:
 
         return best_seg[0]
 
-if __name__ == "__main__":
-    # Test Example:
+def main():
+    parser = argparse.ArgumentParser(description='Non Greedy Text Segmentation')
+    parser.add_argument('--text', type=str, help='Input text to segment')
+    parser.add_argument('--k', type=int, default=10, help='Number of top segmentations to keep')
+    parser.add_argument('--alpha', type=float, default=0.5, help='Perplexity normalization factor')
+    parser.add_argument('--model_name', type=str, default="meta-llama/Meta-Llama-3-8B", help='Model name/path')
+    parser.add_argument('--user_segmentation', type=str, help='User-defined segmentation (comma-separated tokens)')
 
-    # Initialize values
-    text = "catdog catfly"
-    k = 10
-
+    args = parser.parse_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    segmenter = TextSegmenter(k=args.k, alpha=args.alpha, model_name=args.model_name)
 
-    # You can manually pass in a model/tokenizer if you have already created them
-    precreated_model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B").to(device)
-    precreated_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
+    if args.text:
+        default_tokenization, default_perplexity = segmenter.get_default_tokenization_perplexity(args.text)
+        print(f"Default Tokenization: {default_tokenization}")
+        print(f"Default Perplexity: {default_perplexity}")
 
-    print("starting")
-    segmenter = TextSegmenter(k=k, model=precreated_model, tokenizer=precreated_tokenizer)
-    default_tokenization, default_perplexity = segmenter.get_default_tokenization_perplexity(text)
-    print(f"Default Tokenization: {default_tokenization}")
-    print(f"Default Perplexity: {default_perplexity}")
+        segs = segmenter.compute_segs(args.text)
+        best_seg = segs[-1][0]
+        print(f"Best Segmentation: {best_seg[0]}")
+        print(f"Best Perplexity: {best_seg[1]}")
+        print(f"Runner Ups (Perplexity): {[seg[1] for seg in segs[-1][1:]]}")
+    
+    if args.user_segmentation:
+        user_seg = segmenter.pre_process_text(args.user_segmentation).split(",") # Todo: test with processing special tokens and processing without
+        user_seg_perplexity = segmenter.calculate_seg_perplexity(user_seg)
+        print(f"User Defined Segmentation: {user_seg}")
+        print(f"User Defined Segmentation Perplexity: {user_seg_perplexity}")
 
-    # Compute and print results
-    segs = segmenter.compute_segs(text)
-    best_seg = segs[-1][0]
-    print(f"Best Seg: {best_seg[0]}")
-    print(f"Best Perplexity: {best_seg[1]}")
-    print(f"Runner Ups (Perplexity): {[seg[1] for seg in segs[-1][1:]]}")
+if __name__ == "__main__":
+    main()
