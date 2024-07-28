@@ -9,7 +9,7 @@ Improving the performance of LLMs on math, coding, and spelling benchmarks by mo
 python tokenizer.py --text "How many rs are there in strawberry" --k 10 --alpha 0.5 --model_name "meta-llama/Meta-Llama-3-8B"
 ```
 
-**Obtain Perplexity of User-Defined Segmentation**
+**Obtain Perplexity of User-Defined Segmentation (comma-seperated)**
 ```
 python tokenizer.py --user_segmentation "How, many, rs, are, there, in, straw,berry" --alpha 0.5 --model_name "meta-llama/Meta-Llama-3-8B"
 ```
