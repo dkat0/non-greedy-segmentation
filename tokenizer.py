@@ -103,9 +103,10 @@ if __name__ == "__main__":
     k = 10
 
     # You can manually pass in a model/tokenizer if you have already created them
-    precreated_model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B")
+    precreated_model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B").to("cuda")
     precreated_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
 
+    print("starting")
     segmenter = TextSegmenter(k=k, model=precreated_model, tokenizer=precreated_tokenizer)
     default_tokenization, default_perplexity = segmenter.get_default_tokenization_perplexity(text)
     print(f"Default Tokenization: {default_tokenization}")
