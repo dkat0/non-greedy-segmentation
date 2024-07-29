@@ -1,0 +1,83 @@
+{
+    "question_types": {
+        "count_letter_in_word": [
+            "How many \"<letter>\"s are there in <target_word>?",
+            "How many times does the letter \"<letter>\" appear in <target_word>?",
+            "How many '<letter>'s are in the word <target_word>?",
+            "Count the number of \"<letter>\"s in the word <target_word>.",
+            "How many instances of the letter \"<letter>\" are in <target_word>?",
+            "What is the number of times the letter \"<letter>\" appears in <target_word>?"
+        ],
+        "location_of_letter_in_word": [
+            "In the word '<target_word>', at which positions does the letter '<letter>' appear? Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list.",
+            "Identify the positions of the letter '<letter>' in the word '<target_word>' with the first position being indexed as 1. Provide the positions as a comma-separated list.",
+            "Identify the positions of the letter \"<letter>\" in <target_word>. Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list.",
+            "Find the indices of '<letter>' in the word <target_word>. Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list.",
+            "List the positions of the letter '<letter>' in the word <target_word>. Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list.",
+            "At what positions does the character '<letter>' appear in <target_word>? Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list."
+        ],
+        "letter_after_nth_occurrence": [
+            "What's the letter after the <n_with_ordinal_suffix> <letter> in <target_word>?",
+            "What letter follows the <n_with_ordinal_suffix> '<letter>' in <target_word>?",
+            "Which letter comes after the <n_with_ordinal_suffix> <letter> in the word <target_word>?",
+            "What is the character after the <n_with_ordinal_suffix> '<letter>' in <target_word>?",
+            "After the <n_with_ordinal_suffix> '<letter>', which letter is next in <target_word>?",
+            "What letter comes right after the <n_with_ordinal_suffix> '<letter>' in <target_word>?"
+        ],
+        "letters_not_in_word": [
+            "List all the letters of the English alphabet that are not found in the word '<target_word>', separated by commas.",
+            "Identify and list each letter of the English alphabet that does not appear in the word '<target_word>', formatted as a comma-separated list.",
+            "Which letters of the English alphabet are missing from <target_word>? Provide the answer in a comma-separated list.",
+            "Identify the letters of the English alphabet not present in <target_word> and list them in a comma-separated format.",
+            "List the letters of the English alphabet that do not appear in <target_word>, separated by commas.",
+            "What characters of the English alphabet are absent in the word <target_word>? Provide them as a comma-separated list.",
+            "Can you name the letters of the English alphabet not found in <target_word>? List them separated by commas."
+        ],
+        "spell_word_backwards": [
+            "Spell <target_word> backwards.",
+            "Spell the word <target_word> in reverse.",
+            "What is <target_word> spelled backwards?",
+            "Reverse the letters in <target_word>."
+        ],
+        "extract_substring": [
+            "Extract the substring from the <index1_with_ordinal_suffix> to the <index2_with_ordinal_suffix> character in the word '<target_word>'. Use 1-based indexing and include the character at the end position.",
+            "What is the substring from the <index1_with_ordinal_suffix> to the <index2_with_ordinal_suffix> character in <target_word>? Use 1-based indexing and include the character at the end position.",
+            "Extract the substring between the <index1_with_ordinal_suffix> and <index2_with_ordinal_suffix> characters in <target_word>. Use 1-based indexing and include the character at the end position.",
+            "Find the substring from index <index1> to <index2> in <target_word>. Use 1-based indexing and include the character at the end position.",
+            "What substring lies between the <index1_with_ordinal_suffix> and <index2_with_ordinal_suffix> characters of <target_word>? Use 1-based indexing and include the character at the end position.",
+            "What is the substring from the <index1_with_ordinal_suffix> to the <index2_with_ordinal_suffix> letter in <target_word>. Use 1-based indexing and include the character at the end position."
+        ],
+        "replace_letter_in_word": [
+            "Replace all '<letter>'s in <target_word> with '<replacement_value>'.",
+            "Substitute all occurrences of '<letter>' with '<replacement_value>' in the word <target_word>.",
+            "Swap all occurrences of the letter '<letter>' for the letter '<replacement_value>' in <target_word>.",
+            "In '<target_word>', replace each '<letter>' with an '<replacement_value>'.",
+            "Modify <target_word> by replacing all '<letter>'s with \"<replacement_value>\"."
+        ],
+        "capitalize_specific_letters": [
+            "Capitalize all \"<letter>\"s in <target_word>.",
+            "Make every '<letter>' in <target_word> uppercase.",
+            "Turn '<letter>' into '<capitalized_letter>' in the word <target_word>.",
+            "Change all '<letter>'s to capital letters in <target_word>.",
+            "Convert each '<letter>' to '<capitalized_letter>' in <target_word>.",
+            "Uppercase all occurrences of '<letter>' in <target_word>.",
+            "In <target_word>, make '<letter>' uppercase."
+        ],
+        "substring_existence": [
+            "Does the substring '<substring>' exist in <target_word>? Answer with either 'Yes' or 'No'.",
+            "Does <target_word> contain the substring '<substring>'. Answer with either 'Yes' or 'No'.",
+            "Is the substring '<substring>' contained within <target_word>? Answer with either 'Yes' or 'No'.",
+            "Does '<target_word>' include the substring '<substring>'? Answer with either 'Yes' or 'No'."
+        ],
+        "count_total_letters": [
+            "How many letters are there in <target_word>?",
+            "What is the total number of letters in <target_word>?",
+            "Count the letters in the word <target_word>.",
+            "Find the total count of letters in <target_word>.",
+            "How many characters does <target_word> have?",
+            "What is the length of the word <target_word>?",
+            "What is the total number of characters in <target_word>?"
+        ]
+    }
+}
+  

@@ -1,0 +1,10 @@
+[
+    {
+      "id": 1,
+      "question": "How many 'r's are in the word 'strawberry'?",
+      "target_word": "strawberry",
+      "answer": "3",
+      "question_type": "count_letter_in_word",
+      "word_length_category": "medium"
+    }
+]
