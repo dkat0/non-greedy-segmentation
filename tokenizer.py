@@ -48,13 +48,18 @@ class TextSegmenter:
                         # Directly add seg if it's the full entry
                         segs[i].append(([token], self.calculate_seg_perplexity([token])))
                     else:
-                        for k_prime in range(min(self.k, len(segs[j-1]))):
+                        for k_prime in range(len(segs[j-1]) if self.k is None else min(self.k, len(segs[j-1]))):
                             # Update segs[i] with new seg and calculate perplexity
                             new_seg = segs[j-1][k_prime][0] + [token]
                             segs[i].append((new_seg, self.calculate_seg_perplexity(new_seg)))
                     
-            # Keep only top k segs
-            segs[i] = sorted(segs[i], key=lambda x: x[1])[:self.k]
+            # Sort segments by perplexity
+            segs[i] = sorted(segs[i], key=lambda x: x[1])
+
+            # Keep only top k segs (if applicable)
+            if self.k is not None:
+                segs[i] = segs[i] = segs[i][:self.k]
+            
             print(f"{i} ", end = '')
             if not segs[i]:
                 print("Possible error has occurred, no segs generated")
@@ -157,9 +162,9 @@ class TextSegmenter:
 def main():
     parser = argparse.ArgumentParser(description='Non Greedy Text Segmentation')
     parser.add_argument('--text', type=str, help='Input text to segment')
-    parser.add_argument('--k', type=int, default=10, help='Number of top segmentations to keep')
+    parser.add_argument('--k', type=lambda x: int(x) if x.lower() != 'none' else None, default=10, help='Number of top segmentations to keep (use None for exhaustive search)')
     parser.add_argument('--alpha', type=float, default=0.5, help='Perplexity normalization factor')
-    parser.add_argument('--model_name', type=str, default="meta-llama/Meta-Llama-3-8B", help='Model name/path')
+    parser.add_argument('--model_name', type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help='Model name/path')
     parser.add_argument('--user_segmentation', type=str, help='User-defined segmentation (comma-separated tokens)')
     parser.add_argument('--generate_response', type=lambda x: (str(x).lower() in ['true','1', 'yes']), default=True,
                          help='Whether to generate a response from the segmentation(s)')
