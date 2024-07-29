@@ -37,7 +37,17 @@ def llm_count(question, tokenizer: AutoTokenizer, model: AutoModelForCausalLM):
     
     char_level_seg = tokenizer(count_chars, is_split_into_words=True, return_tensors="pt").to("cuda")["input_ids"]
     
-    new_seg = torch.concat([left_tokens, char_level_seg, right_tokens], dim=1)
+    start_token_id = model.config.bos_token_id # for Llama-3 models, this is 128000
+    # Remove all start tokens, since the tokenizer will incorrectly add one to the beginning of all of these
+    for _ in range(2): # Since the Llama tokenizer seems to incorrectly add two start tokens when using chat templating
+        if left_tokens[0, 0] == start_token_id:
+            left_tokens = left_tokens[:, 1:]
+    if char_level_seg[0, 0] == start_token_id:
+        char_level_seg = char_level_seg[:, 1:]
+    if right_tokens[0, 0] == start_token_id:
+        right_tokens = right_tokens[:, 1:]
+
+    new_seg = torch.concat([torch.tensor([[start_token_id]]).to("cuda"), left_tokens, char_level_seg, right_tokens], dim=1)
     
     pure_question = left_str + ''.join(count_chars) + right_str
     original_seg = tokenizer(pure_question, return_tensors="pt").to("cuda")["input_ids"]
