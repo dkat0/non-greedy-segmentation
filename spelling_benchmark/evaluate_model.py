@@ -77,6 +77,10 @@ class ModelEvaluator:
         if tokenization_mode == "default":
             tokens = self.tokenizer(chat_template, return_tensors="pt").to(self.device)["input_ids"]
 
+            # Check for duplicate start token
+            if tokens[0, 0] == start_token_id and tokens[0, 1] == start_token_id:
+                tokens = tokens[:, 1:]
+
             # This part is simply for ease of accessing the tokenization for the target word for more detailed results, not really necessary at all
             # This might not be completely accurate due to potentially prepending spaces, will all tokenizers do that? Not sure, might be a better way for this
             try:
