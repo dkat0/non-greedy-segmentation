@@ -66,7 +66,10 @@ class ModelEvaluator:
         return answer.strip().replace(", ", ",").replace(",", ", ")
 
     def evaluate_answer(self, question, model_answer):
-        return self.parse_answer(model_answer).replace(", ", ",") == question['answer'].replace(", ", ",")
+        parsed_answer = self.parse_answer(model_answer)
+        if parsed_answer is None:
+            return False
+        return parsed_answer.replace(", ", ",") == question['answer'].replace(", ", ",")
 
     def prepare_tokens(self, model_prompt, chat_template, question, tokenization_mode):
         start_token_id = self.model.config.bos_token_id # for Llama-3 models, this is 128000
@@ -83,7 +86,7 @@ class ModelEvaluator:
 
                 if word_tokens[0, 0] == start_token_id:
                     word_tokens = word_tokens[:, 1:]
-                
+
                 return tokens, word_tokens
             except ValueError:
                 return tokens, None

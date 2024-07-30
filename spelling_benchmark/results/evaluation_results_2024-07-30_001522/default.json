@@ -1,0 +1,86 @@
+[
+    {
+        "id": 1,
+        "question": "Reverse the letters in stephen.",
+        "expected_answer": "nehpets",
+        "model_parsed_answer": "nehpets",
+        "model_response": "<answer>nehpets</answer>",
+        "correct": true,
+        "current_total_accuracy": 1,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Reverse", " the", " letters", " in", " step", "hen", ".", "<|eot_id|>"],
+            "target_word_tokens": [" step", "hen"]
+        }
+    },
+    {
+        "id": 2,
+        "question": "Identify the letters of the English alphabet not present in identifies and list them in a comma-separated format.",
+        "expected_answer": "a, b, c, g, h, j, k, l, m, o, p, q, r, u, v, w, x, y, z",
+        "model_parsed_answer": "",
+        "model_response": "Provide your answer inside <answer></answer> tags: Identify the letters of the English alphabet not present in identifies and list them in a comma-separated format.",
+        "correct": false,
+        "current_total_accuracy": 0.5,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Identify", " the", " letters", " of", " the", " English", " alphabet", " not", " present", " in", " identifies", " and", " list", " them", " in", " a", " comma", "-separated", " format", ".", "<|eot_id|>"],
+            "target_word_tokens": [" identifies"]
+        }
+    },
+    {
+        "id": 3,
+        "question": "List the letters of the English alphabet that do not appear in artificial, separated by commas.",
+        "expected_answer": "b, d, e, g, h, j, k, m, n, o, p, q, s, u, v, w, x, y, z",
+        "model_parsed_answer": "K, Q, X, Y",
+        "model_response": "<answer>K, Q, X, Y</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.333333,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " List", " the", " letters", " of", " the", " English", " alphabet", " that", " do", " not", " appear", " in", " artificial", ",", " separated", " by", " commas", ".", "<|eot_id|>"],
+            "target_word_tokens": [" artificial"]
+        }
+    },
+    {
+        "id": 4,
+        "question": "How many instances of the letter \"v\" are in villages?",
+        "expected_answer": "1",
+        "model_parsed_answer": "2",
+        "model_response": "<answer>2</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.25,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " How", " many", " instances", " of", " the", " letter", " \"", "v", "\"", " are", " in", " villages", "?", "<|eot_id|>"],
+            "target_word_tokens": [" villages"]
+        }
+    },
+    {
+        "id": 5,
+        "question": "Uppercase all occurrences of 'a' in speiptaitz.",
+        "expected_answer": "speiptAitz",
+        "model_parsed_answer": "SPEIUPPERCASETZ",
+        "model_response": "<answer>SPEIUPPERCASETZ</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.2,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " U", "pp", "erc", "ase", " all", " occurrences", " of", " '", "a", "'", " in", " spe", "ipt", "ait", "z", ".", "<|eot_id|>"],
+            "target_word_tokens": [" spe", "ipt", "ait", "z"]
+        }
+    },
+    {
+        "id": 6,
+        "question": "Does 'aerospace' include the substring 'imaging'? Answer with either 'Yes' or 'No'.",
+        "expected_answer": "No",
+        "model_parsed_answer": "No",
+        "model_response": "<answer>No</answer>",
+        "correct": true,
+        "current_total_accuracy": 0.333333,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Does", " '", "a", "eros", "pace", "'", " include", " the", " substring", " '", "im", "aging", "'?", " Answer", " with", " either", " '", "Yes", "'", " or", " '", "No", "'.", "<|eot_id|>"],
+            "target_word_tokens": ["a", "eros", "pace"]
+        }
+    }
+]

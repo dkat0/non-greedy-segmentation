@@ -1,0 +1,77 @@
+[
+    {
+        "id": 1,
+        "question": "Reverse the letters in stephen.",
+        "expected_answer": "nehpets",
+        "model_parsed_answer": "nehpeTS",
+        "model_response": "<answer>nehpeTS</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Reverse", " the", " letters", " in", " st", "ep", "hen", ".", "<|eot_id|>"],
+            "target_word_tokens": [" st", "ep", "hen"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 2,
+        "question": "Identify the letters of the English alphabet not present in identifies and list them in a comma-separated format.",
+        "expected_answer": "a, b, c, g, h, j, k, l, m, o, p, q, r, u, v, w, x, y, z",
+        "model_parsed_answer": "The letters of the English alphabet not present in the word \"identifies\" are: b, c, f, g, h, j, k, l, m, n, o, p, q, ",
+        "model_response": "<answer>\n\nThe letters of the English alphabet not present in the word \"identifies\" are: b, c, f, g, h, j, k, l, m, n, o, p, q,",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Identify", " the", " letters", " of", " the", " English", " alphabet", " not", " present", " in", " i", "de", "nt", "i", "f", "ies", " and", " list", " them", " in", " a", " comma", "-separated", " format", ".", "<|eot_id|>"],
+            "target_word_tokens": [" i", "de", "nt", "i", "f", "ies"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 3,
+        "question": "List the letters of the English alphabet that do not appear in artificial, separated by commas.",
+        "expected_answer": "b, d, e, g, h, j, k, m, n, o, p, q, s, u, v, w, x, y, z",
+        "model_parsed_answer": "K, M, V, W, X, Y, Z",
+        "model_response": "<answer>K, M, V, W, X, Y, Z</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " List", " the", " letters", " of", " the", " English", " alphabet", " that", " do", " not", " appear", " in", " a", "rt", "i", "f", "icial", ",", " separated", " by", " commas", ".", "<|eot_id|>"],
+            "target_word_tokens": [" a", "rt", "i", "f", "icial"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 4,
+        "question": "How many instances of the letter \"v\" are in villages?",
+        "expected_answer": "1",
+        "model_parsed_answer": "2",
+        "model_response": "<answer>2</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " How", " many", " instances", " of", " the", " letter", " \"", "v", "\"", " are", " in", " v", "ill", "ages", "?", "<|eot_id|>"],
+            "target_word_tokens": [" v", "ill", "ages"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 5,
+        "question": "Uppercase all occurrences of 'a' in speiptaitz.",
+        "expected_answer": "speiptAitz",
+        "model_parsed_answer": "SPEIPTITZ",
+        "model_response": "<answer>SPEIPTITZ</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " U", "pp", "erc", "ase", " all", " occurrences", " of", " '", "a", "'", " in", " s", "pe", "i", "pt", "ait", "z", ".", "<|eot_id|>"],
+            "target_word_tokens": [" s", "pe", "i", "pt", "ait", "z"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    }
+]
