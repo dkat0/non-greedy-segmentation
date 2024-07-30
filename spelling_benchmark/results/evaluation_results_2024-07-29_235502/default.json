@@ -1,0 +1,41 @@
+[
+    {
+        "id": 1,
+        "question": "Reverse the letters in stephen.",
+        "expected_answer": "nehpets",
+        "model_parsed_answer": "",
+        "model_response": "Provide your answer inside <answer></answer> tags: Reverse the letters in stephen.",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Reverse", " the", " letters", " in", " step", "hen", ".", "<|eot_id|>"]
+        }
+    },
+    {
+        "id": 2,
+        "question": "Identify the letters of the English alphabet not present in identifies and list them in a comma-separated format.",
+        "expected_answer": "a, b, c, g, h, j, k, l, m, o, p, q, r, u, v, w, x, y, z",
+        "model_parsed_answer": "",
+        "model_response": "Provide your answer inside <answer></answer> tags: Identify the letters of the English alphabet not present in identifies and list them in a comma-separated format.",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Identify", " the", " letters", " of", " the", " English", " alphabet", " not", " present", " in", " identifies", " and", " list", " them", " in", " a", " comma", "-separated", " format", ".", "<|eot_id|>"]
+        }
+    },
+    {
+        "id": 3,
+        "question": "List the letters of the English alphabet that do not appear in artificial, separated by commas.",
+        "expected_answer": "b, d, e, g, h, j, k, m, n, o, p, q, s, u, v, w, x, y, z",
+        "model_parsed_answer": "K, Q, X, Y",
+        "model_response": "<answer>K, Q, X, Y</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "default",
+            "tokens": ["<|begin_of_text|>", "<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " List", " the", " letters", " of", " the", " English", " alphabet", " that", " do", " not", " appear", " in", " artificial", ",", " separated", " by", " commas", ".", "<|eot_id|>"]
+        }
+    }
+]

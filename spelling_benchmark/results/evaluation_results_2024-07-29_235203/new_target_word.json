@@ -1,0 +1,197 @@
+[
+    {
+        "id": 1,
+        "question": "Reverse the letters in stephen.",
+        "expected_answer": "nehpets",
+        "model_parsed_answer": "nehpeTs",
+        "model_response": "<answer>nehpeTs</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Reverse", " the", " letters", " in", " st", "ep", "hen", ".", "<|eot_id|>"],
+            "target_word_tokens": [" st", "ep", "hen"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 2,
+        "question": "Identify the letters of the English alphabet not present in identifies and list them in a comma-separated format.",
+        "expected_answer": "a, b, c, g, h, j, k, l, m, o, p, q, r, u, v, w, x, y, z",
+        "model_parsed_answer": "a, c, d, e, f, h, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z",
+        "model_response": "<answer> a, c, d, e, f, h, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Identify", " the", " letters", " of", " the", " English", " alphabet", " not", " present", " in", " i", "de", "nt", "i", "f", "ies", " and", " list", " them", " in", " a", " comma", "-separated", " format", ".", "<|eot_id|>"],
+            "target_word_tokens": [" i", "de", "nt", "i", "f", "ies"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 3,
+        "question": "List the letters of the English alphabet that do not appear in artificial, separated by commas.",
+        "expected_answer": "b, d, e, g, h, j, k, m, n, o, p, q, s, u, v, w, x, y, z",
+        "model_parsed_answer": "J, K, Q, X, Y, Z",
+        "model_response": "<answer>J, K, Q, X, Y, Z</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " List", " the", " letters", " of", " the", " English", " alphabet", " that", " do", " not", " appear", " in", " a", "rt", "i", "f", "icial", ",", " separated", " by", " commas", ".", "<|eot_id|>"],
+            "target_word_tokens": [" a", "rt", "i", "f", "icial"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 4,
+        "question": "How many instances of the letter \"v\" are in villages?",
+        "expected_answer": "1",
+        "model_parsed_answer": "2",
+        "model_response": "<answer>2</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " How", " many", " instances", " of", " the", " letter", " \"", "v", "\"", " are", " in", " v", "ill", "ages", "?", "<|eot_id|>"],
+            "target_word_tokens": [" v", "ill", "ages"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 5,
+        "question": "Uppercase all occurrences of 'a' in speiptaitz.",
+        "expected_answer": "speiptAitz",
+        "model_parsed_answer": "SPEIPTITZ",
+        "model_response": "<answer>SPEIPTITZ</answer>",
+        "correct": false,
+        "current_total_accuracy": 0,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " U", "pp", "erc", "ase", " all", " occurrences", " of", " '", "a", "'", " in", " s", "pe", "i", "pt", "ait", "z", ".", "<|eot_id|>"],
+            "target_word_tokens": [" s", "pe", "i", "pt", "ait", "z"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 6,
+        "question": "Does 'aerospace' include the substring 'imaging'? Answer with either 'Yes' or 'No'.",
+        "expected_answer": "No",
+        "model_parsed_answer": "No",
+        "model_response": "<answer>No</answer>",
+        "correct": true,
+        "current_total_accuracy": 0.166667,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Does", " '", "a", "eros", "pace", "'", " include", " the", " substring", " '", "im", "aging", "'?", " Answer", " with", " either", " '", "Yes", "'", " or", " '", "No", "'.", "<|eot_id|>"],
+            "target_word_tokens": ["a", "eros", "pace"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 7,
+        "question": "At what positions does the character 'e' appear in declared? Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list.",
+        "expected_answer": "2, 7",
+        "model_parsed_answer": "1, 5, 7, 11",
+        "model_response": "<answer>1, 5, 7, 11</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.142857,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " At", " what", " positions", " does", " the", " character", " '", "e", "'", " appear", " in", " decl", "ared", "?", " Use", " ", "1", "-based", " indexing", " (", "where", " the", " first", " letter", " of", " the", " word", " is", " considered", " position", " ", "1", ")", " and", " provide", " the", " positions", " as", " a", " comma", "-separated", " list", ".", "<|eot_id|>"],
+            "target_word_tokens": [" decl", "ared"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 8,
+        "question": "List the positions of the letter 'c' in the word center. Use 1-based indexing (where the first letter of the word is considered position 1) and provide the positions as a comma-separated list.",
+        "expected_answer": "1",
+        "model_parsed_answer": "1, 2",
+        "model_response": "<answer>1, 2</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.125,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " List", " the", " positions", " of", " the", " letter", " '", "c", "'", " in", " the", " word", " c", "e", "nt", "er", ".", " Use", " ", "1", "-based", " indexing", " (", "where", " the", " first", " letter", " of", " the", " word", " is", " considered", " position", " ", "1", ")", " and", " provide", " the", " positions", " as", " a", " comma", "-separated", " list", ".", "<|eot_id|>"],
+            "target_word_tokens": [" c", "e", "nt", "er"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 9,
+        "question": "Count the number of \"p\"s in the word pgp.",
+        "expected_answer": "2",
+        "model_parsed_answer": "2",
+        "model_response": "<answer>2</answer>",
+        "correct": true,
+        "current_total_accuracy": 0.222222,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Count", " the", " number", " of", " \"", "p", "\"s", " in", " the", " word", " pg", "p", ".", "<|eot_id|>"],
+            "target_word_tokens": [" pg", "p"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 10,
+        "question": "Count the number of \"e\"s in the word college.",
+        "expected_answer": "2",
+        "model_parsed_answer": "3",
+        "model_response": "<answer>3</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.2,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Count", " the", " number", " of", " \"", "e", "\"s", " in", " the", " word", " col", "le", "ge", ".", "<|eot_id|>"],
+            "target_word_tokens": [" col", "le", "ge"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 11,
+        "question": "Does andrea contain the substring 'nati'. Answer with either 'Yes' or 'No'.",
+        "expected_answer": "No",
+        "model_parsed_answer": "No",
+        "model_response": "<answer>No</answer>",
+        "correct": true,
+        "current_total_accuracy": 0.272727,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Does", " and", "rea", " contain", " the", " substring", " '", "n", "ati", "'.", " Answer", " with", " either", " '", "Yes", "'", " or", " '", "No", "'.", "<|eot_id|>"],
+            "target_word_tokens": [" and", "rea"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 12,
+        "question": "What characters of the English alphabet are absent in the word hello? Provide them as a comma-separated list.",
+        "expected_answer": "a, b, c, d, f, g, i, j, k, m, n, p, q, r, s, t, u, v, w, x, y, z",
+        "model_parsed_answer": "a, c, d, f, i, k, m, n, o, q, r, t, u, v, w, x, y, z",
+        "model_response": "<answer>a, c, d, f, i, k, m, n, o, q, r, t, u, v, w, x, y, z</answer>",
+        "correct": false,
+        "current_total_accuracy": 0.25,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " What", " characters", " of", " the", " English", " alphabet", " are", " absent", " in", " the", " word", " he", "l", "lo", "?", " Provide", " them", " as", " a", " comma", "-separated", " list", ".", "<|eot_id|>"],
+            "target_word_tokens": [" he", "l", "lo"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    },
+    {
+        "id": 13,
+        "question": "Modify statewide by replacing all 'w's with \"y\".",
+        "expected_answer": "stateyide",
+        "model_parsed_answer": "stateyide",
+        "model_response": "<answer>stateyide</answer>",
+        "correct": true,
+        "current_total_accuracy": 0.307692,
+        "tokenization_info": {
+            "tokenization_mode": "new_target_word",
+            "tokens": ["<|begin_of_text|>", "<|start_header_id|>", "user", "<|end_header_id|>", "\n\n", "Provide", " your", " answer", " inside", " <", "answer", "></", "answer", ">", " tags", ":", " Modify", " s", "t", "ate", "w", "ide", " by", " replacing", " all", " '", "w", "'s", " with", " \"", "y", "\".", "<|eot_id|>"],
+            "target_word_tokens": [" s", "t", "ate", "w", "ide"],
+            "segmenter_params": { "k": 10, "alpha": 0.4 }
+        }
+    }
+]

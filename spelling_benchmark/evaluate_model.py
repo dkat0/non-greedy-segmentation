@@ -2,21 +2,23 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import json
 import pprint
+import os 
 from json_encoder import CompactJSONEncoder
 from datetime import datetime
 
 class ModelEvaluator:
-    def __init__(self, model_name, questions_file, tokenization_mode, segmenter_params):
+    def __init__(self, model_name, questions_file, tokenization_modes, segmenter_params):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
-        self.questions = self.load_questions(questions_file)
-        self.tokenization_mode = tokenization_mode
+        self.model.generation_config.pad_token_id = self.tokenizer.eos_token_id # to suppress the warning
 
+        self.questions = self.load_questions(questions_file)
+        self.tokenization_modes = tokenization_modes
         self.segmenter_params = segmenter_params
 
         self.segmenter = None
-        if tokenization_mode in ['new_whole_prompt', 'new_target_word']:
+        if 'new_whole_prompt' in tokenization_modes or 'new_target_word' in tokenization_modes:
             self.segmenter = self.initialize_segmenter()
 
     @staticmethod
@@ -66,17 +68,32 @@ class ModelEvaluator:
     def evaluate_answer(self, question, model_answer):
         return self.parse_answer(model_answer).replace(", ", ",") == question['answer'].replace(", ", ",")
 
-    def prepare_tokens(self, model_prompt, chat_template, question):
-        if self.tokenization_mode == "default":
-            tokens = self.tokenizer(model_prompt, return_tensors="pt").to(self.device)["input_ids"]
-            return tokens, None
+    def prepare_tokens(self, model_prompt, chat_template, question, tokenization_mode):
+        start_token_id = self.model.config.bos_token_id # for Llama-3 models, this is 128000
+
+        if tokenization_mode == "default":
+            tokens = self.tokenizer(chat_template, return_tensors="pt").to(self.device)["input_ids"]
+
+            # This part is simply for ease of accessing the tokenization for the target word for more detailed results, not really necessary at all
+            # This might not be completely accurate due to potentially prepending spaces, will all tokenizers do that? Not sure, might be a better way for this
+            try:
+                potential_space_index = model_prompt.index(question['target_word']) - 1
+                word_to_tokenize = " " + question['target_word'] if model_prompt[potential_space_index] == " " else question['target_word']
+                word_tokens = self.tokenizer(word_to_tokenize, return_tensors="pt").to(self.device)["input_ids"]
+
+                if word_tokens[0, 0] == start_token_id:
+                    word_tokens = word_tokens[:, 1:]
+                
+                return tokens, word_tokens
+            except ValueError:
+                return tokens, None
         
-        if self.tokenization_mode in ["new_whole_prompt", "new_target_word", "characterize_target_word"]:
-            if self.tokenization_mode == "new_whole_prompt":
+        if tokenization_mode in ["new_whole_prompt", "new_target_word", "characterize_target_word"]:
+            if tokenization_mode == "new_whole_prompt":
                 seg = self.segmenter.tokenize(model_prompt)
                 left_text, right_text = chat_template.split(model_prompt)
             else:
-                seg = self.segmenter.tokenize(question['target_word']) if self.tokenization_mode == "new_target_word" else list(question['target_word'])
+                seg = self.segmenter.tokenize(question['target_word']) if tokenization_mode == "new_target_word" else list(question['target_word'])
                 left_text, right_text = chat_template.split(question['target_word'], 1)
 
                 # Move previous space into seg
@@ -88,8 +105,6 @@ class ModelEvaluator:
             text_tokens = self.tokenizer(seg, is_split_into_words=True, return_tensors="pt").to(self.device)["input_ids"]
             right_tokens = self.tokenizer(right_text, return_tensors="pt").to(self.device)["input_ids"]
             
-            start_token_id = self.model.config.bos_token_id # for Llama-3 models, this is 128000
-
             # Remove all start tokens, since the tokenizer will incorrectly add one to the beginning of all of these
             for _ in range(2): # Since the Llama tokenizer seems to incorrectly add two start tokens when using chat templating
                 if left_tokens[0, 0] == start_token_id:
@@ -104,62 +119,74 @@ class ModelEvaluator:
             return tokens, text_tokens
 
     def evaluate_model(self):
-        results = []
-        correct_answers = 0
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"evaluation_results_{timestamp}.json"
+        results = {mode: [] for mode in self.tokenization_modes}
+        correct_answers = {mode: 0 for mode in self.tokenization_modes}
         
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+        os.mkdir(f"results/evaluation_results_{timestamp}")
+        output_files = {mode: f"results/evaluation_results_{timestamp}/{mode}.json" for mode in self.tokenization_modes}
+
+        # Create all files
+        for file in output_files.values():
+            with open(file, "x") as _:
+                pass
+        
+        print("[info] Starting evaluation. See /results/ folder for more detailed information.\n")
         for i, question in enumerate(self.questions):
             model_prompt = "Provide your answer inside <answer></answer> tags: " + question['question']
-            print(f"Querying model for Prompt {question['id']}: {model_prompt}")
+            print(f"[{question['id']}] Prompt {question['id']}: {model_prompt}")
 
-            messages = [{"role": "user", "content": model_prompt}]
-            chat_template = self.tokenizer.apply_chat_template(messages, tokenize=False)
-            print("Chat template: ", chat_template)
+            for tokenization_mode in self.tokenization_modes:
+                messages = [{"role": "user", "content": model_prompt}]
+                chat_template = self.tokenizer.apply_chat_template(messages, tokenize=False)
+                #print("Chat template: ", chat_template)
+                
+                tokens, text_tokens = self.prepare_tokens(model_prompt, chat_template, question, tokenization_mode)
+                #print("Got tokens: ", tokens)
+
+                with torch.no_grad():
+                    outputs = self.model.generate(tokens, attention_mask=torch.ones_like(tokens), max_new_tokens=50)
+                
+                model_answer = self.tokenizer.decode(outputs[0]).split("<|end_header_id|>\n\n")[-1].split("<|eot_id|>")[0]
+                #response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+                evaluation_result = {
+                    "id": question["id"],
+                    "question": question["question"],
+                    "expected_answer": question["answer"],
+                    "model_parsed_answer": self.parse_answer(model_answer),
+                    "model_response": model_answer,
+                    "correct": self.evaluate_answer(question, model_answer)
+                }
+                if evaluation_result["correct"]:
+                    correct_answers[tokenization_mode] += 1
+                accuracy = correct_answers[tokenization_mode] / (i + 1)
+                evaluation_result["current_total_accuracy"] = accuracy
+
+                #pprint.pprint(evaluation_result)
+
+                token_list = self.tokenizer.convert_ids_to_tokens(tokens.tolist()[0])
+                tokenization_info = {
+                    "tokenization_mode": tokenization_mode,
+                    "tokens": [self.decode_text_special(token) for token in token_list]
+                }
+                if tokenization_mode in ["default", "new_target_word", "characterize_target_word"]:
+                    word_tokens = self.tokenizer.convert_ids_to_tokens(text_tokens.tolist()[0])
+                    tokenization_info["target_word_tokens"] = [self.decode_text_special(token) for token in word_tokens]
+                
+                if tokenization_mode in ["new_whole_prompt", "new_target_word"]:
+                    tokenization_info["segmenter_params"] = self.segmenter_params
+                
+                evaluation_result["tokenization_info"] = tokenization_info
+
+                results[tokenization_mode].append(evaluation_result)
+
+                print(f"[{question['id']}] {tokenization_mode} mode: {'correct' if evaluation_result['correct'] else 'incorrect'}")
+
+                with open(output_files[tokenization_mode], 'w') as f:
+                    json.dump(results[tokenization_mode], f, cls=CompactJSONEncoder)
             
-            tokens, text_tokens = self.prepare_tokens(model_prompt, chat_template, question)
-            print("Got tokens: ", tokens)
-
-            with torch.no_grad():
-                outputs = self.model.generate(tokens, attention_mask=torch.ones_like(tokens), max_new_tokens=50)
-            
-            model_answer = self.tokenizer.decode(outputs[0]).split("<|end_header_id|>\n\n")[-1].split("<|eot_id|>")[0]
-            #response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-            evaluation_result = {
-                "id": question["id"],
-                "question": question["question"],
-                "expected_answer": question["answer"],
-                "model_parsed_answer": self.parse_answer(model_answer).replace(",", ", "),
-                "model_response": model_answer,
-                "correct": self.evaluate_answer(question, model_answer)
-            }
-            if evaluation_result["correct"]:
-                correct_answers += 1
-            accuracy = correct_answers / (i + 1)
-            evaluation_result["current_total_accuracy"] = accuracy
-
-            pprint.pprint(evaluation_result)
-
-            token_list = self.tokenizer.convert_ids_to_tokens(tokens.tolist()[0])
-            tokenization_info = {
-                "tokenization_mode": self.tokenization_mode,
-                "tokens": [self.decode_text_special(token) for token in token_list]
-            }
-            if self.tokenization_mode in ["new_target_word", "characterize_target_word"]:
-                word_tokens = self.tokenizer.convert_ids_to_tokens(text_tokens.tolist()[0])
-                tokenization_info["target_word_tokens"] = [self.decode_text_special(token) for token in word_tokens]
-            
-            if self.tokenization_mode in ["new_whole_prompt", "new_target_word"]:
-                tokenization_info["segmenter_params"] = self.segmenter_params
-            
-            evaluation_result["tokenization_info"] = tokenization_info
-
-            results.append(evaluation_result)
-
-            with open(output_file, 'w') as f:
-                json.dump(results, f, cls=CompactJSONEncoder)
+            print("")
         
         return results
 
@@ -168,8 +195,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Model Evaluator')
     parser.add_argument("--model_name", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help='Model name/path')
-    parser.add_argument("--questions", type=str, default="generated_questions.json", help='Path to questions JSON file')
-    parser.add_argument('--tokenization_mode', type=str, choices=['default', 'new_whole_prompt', 'new_target_word', 'characterize_target_word'], default='default')
+    parser.add_argument("--questions", type=str, default="questions/generated_questions.json", help='Path to questions JSON file')
+    parser.add_argument('--tokenization_modes', type=str, nargs='+', choices=['default', 'new_whole_prompt', 'new_target_word', 'characterize_target_word'], default=['default'])
     parser.add_argument('--k', type=lambda x: int(x) if x.lower() != 'none' else None, default=10, help='Number of top segmentations to keep (use None for exhaustive search)')
     parser.add_argument('--alpha', type=float, default=0.4, help='Perplexity normalization factor (if using new tokenization mode)')
     args = parser.parse_args()
@@ -179,5 +206,5 @@ if __name__ == "__main__":
         "alpha": args.alpha
     }
     
-    evaluator = ModelEvaluator(args.model_name, args.questions, args.tokenization_mode, segmenter_params)
+    evaluator = ModelEvaluator(args.model_name, args.questions, args.tokenization_modes, segmenter_params)
     results = evaluator.evaluate_model()

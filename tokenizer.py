@@ -38,7 +38,7 @@ class TextSegmenter:
     def compute_segs(self, text):
         n = len(text)
         segs = [[] for _ in range(n)]
-        print(f"Iteration / {n}: ", end = '')
+        #print(f"Iteration / {n}: ", end = '')
         
         for i in range(n):
             for j in range(i+1):
@@ -60,11 +60,11 @@ class TextSegmenter:
             if self.k is not None:
                 segs[i] = segs[i] = segs[i][:self.k]
             
-            print(f"{i} ", end = '')
+            #print(f"{i} ", end = '')
             if not segs[i]:
                 print("Possible error has occurred, no segs generated")
                 exit()
-        print("")
+        #print("")
         return segs
 
     def test_perplexity(self, seg):
@@ -106,12 +106,12 @@ class TextSegmenter:
     def tokenize(self, text):
         segs = self.compute_segs(text)
         best_seg = segs[-1][0]
-        
-        print(f"Best Seg: {best_seg[0]}")
-        print(f"Best Perplexity: {best_seg[1]}")
-        print(f"Runner Ups (Perplexity): {[seg[1] for seg in segs[-1][1:]]}")
-
         return best_seg[0]
+    
+    def tokenize_extra_info(self, text):
+        segs = self.compute_segs(text)
+        best_seg = segs[-1][0]
+        return segs[-1]
     
     def seg_to_token_list(self, seg):
         input_ids = self.tokenizer(seg, is_split_into_words=True, return_tensors="pt").to(self.device)["input_ids"]

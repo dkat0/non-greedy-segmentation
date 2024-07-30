@@ -210,5 +210,5 @@ for id in range(1, num_questions_to_generate+1):
     })
 
 # Save generated questions to JSON file
-with open('generated_questions.json', 'w') as file:
+with open('questions/generated_questions.json', 'w') as file:
     json.dump(generated_questions, file, indent=2)
