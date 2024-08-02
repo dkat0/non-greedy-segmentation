@@ -1,6 +1,5 @@
 # non-greedy-segmentation
-Improving the performance of LLMs on math, coding, and spelling benchmarks by modifying the tokenization process at inference time.
-
+Improving the performance of LLMs on different benchmarks through non-greedy segmentation at inference time.
 
 # CLI example commands
 
