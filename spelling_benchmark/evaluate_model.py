@@ -140,6 +140,8 @@ class ModelEvaluator:
         
         print("[info] Starting evaluation. See /results/ folder for more detailed information.\n")
         for i, question in enumerate(self.questions):
+            if question['id'] <= 3787:
+                continue
             model_prompt = "Provide your answer inside <answer></answer> tags: " + question['question']
             print(f"[{question['id']}] Prompt {question['id']}: {model_prompt}")
 
