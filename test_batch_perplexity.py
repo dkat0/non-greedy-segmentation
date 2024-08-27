@@ -61,7 +61,7 @@ class PerplexityCalculator:
         for sentence_loss in loss:
             sentence_loss = sentence_loss[sentence_loss != 0]  # Remove padding losses
             num_tokens = sentence_loss.size(0)
-            average_loss = torch.sum(sentence_loss) / (num_tokens ** self.perplexity_normalization_alpha)
+            average_loss = torch.sum(sentence_loss) / num_tokens # (num_tokens ** self.perplexity_normalization_alpha)
             normalized_ppl = torch.exp(average_loss)
             perplexities.append(normalized_ppl.item())
         
@@ -82,7 +82,7 @@ class PerplexityCalculator:
 
         # Calculate Normalized PPL
         num_tokens = input_ids.shape[1]
-        average_loss = loss / (num_tokens ** self.perplexity_normalization_alpha)
+        average_loss = loss # / num_tokens # / (num_tokens ** self.perplexity_normalization_alpha)
         normalized_ppl = torch.exp(average_loss)
         
         return normalized_ppl.item() 
